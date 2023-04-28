@@ -3,34 +3,19 @@ using namespace std;
 
 int main()
 {
-    string text;
-    int c;
+    int array[6][2]={
+        {1, 3},
+        {2, 1},
+        {2, 4},
+        {2, 5},
+        {6, 2},
+        {6, 7},
+    };
 
-    ifstream file ("matriks.txt");
-    int myArray[5][5];
-    for(int i = 0; i < 5; i++)
-    {
-        for(int j = 0; j < 5; j++)
-        {
-        file >> myArray[i][j];
-        }
-    }
-    for(int i = 0; i < 5; i++)
-    {
-         for(int j = 0; j < 5; j++){
-                cout<<myArray[i][j]<<" ";
-         } 
-         cout<<"\n";
-    }
-    myArray[0][0]=0;
-    cout<<endl;
-    for(int i = 0; i < 5; i++)
-    {
-         for(int j = 0; j < 5; j++){
-                cout<<myArray[i][j]<<" ";
-         }
-         cout<<"\n";
-    }
-    file.close();
+    cout<<array[0][0]<<" "<<array[0][1];
+    for
+    array[i]
+
+    int matriks[7][7]={0};
     return 0;
 }
