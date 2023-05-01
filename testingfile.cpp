@@ -12,10 +12,21 @@ int main()
         {6, 7},
     };
 
-    cout<<array[0][0]<<" "<<array[0][1];
-    for
-    array[i]
-
     int matriks[7][7]={0};
+    
+    for(int i = 0; i<6; i++)
+    {
+        matriks[array[i][0]-1][array[i][1]-1]=1;
+        matriks[array[i][1]-1][array[i][0]-1]=1;
+    }
+
+    for(int i = 0; i<7; i++)
+    {
+        for(int j = 0; j<7; j++)
+        {
+            cout<<matriks[i][j]<<" ";
+        }
+        cout<<endl;
+    }
     return 0;
 }

@@ -164,6 +164,28 @@ void rekonstruksipohon()
     {
         cout<<edge[i][0]<<" "<<edge[i][1]<<endl;
     }
+
+    cout<<endl;
+    cout<<"Matriks ketetanggan:\n";
+
+    //deklarasi matriks
+    int matriks[jumlahvertex][jumlahvertex]={};
+
+    for(int i = 0; i<jumlahvertex-1; i++)
+    {
+        matriks[edge[i][0]-1][edge[i][1]-1]=1;
+        matriks[edge[i][1]-1][edge[i][0]-1]=1;
+    }
+
+    for(int i = 0; i<jumlahvertex; i++)
+    {
+        for(int j = 0; j<jumlahvertex; j++)
+        {
+            cout<<matriks[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
 }
 
 int main()
