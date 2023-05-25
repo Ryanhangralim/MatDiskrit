@@ -47,24 +47,16 @@ int main()
     }
     
     //Perubahan nilai hm
-    for(int i=2; i<=vertex; i++)
-    {
         for(int j=2; j<=vertex; j++)
         {
-            if((hm[j]==1)and(temp[j]==0))
+            for (int k = 2; k <= vertex; k++)
             {
-                temp[j]=1;
-                for (int k = 2; k <= vertex; k++)
+                if((matrix[j][k]==1)and(hm[k]==0))
                 {
-                    if((matrix[j][k]==1)and(hm[k]==0))
-                    {
-                        hm[k]=1;
-                    }
+                   hm[k]=1;
                 }
-                
             }
         }
-    }
 
     for(int i = 2; i<=vertex; i++ )
     {

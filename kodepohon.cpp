@@ -66,7 +66,7 @@ int main()
     derajat[k]-=1;
     derajat[l]-=1;
 
-    cout<<"k: "<<k<<" l: "<<l<<endl;
+    cout<<"Vt: "<<vt+1<<" Vh: "<<vh+1<<endl;
    }
 
     //print derajat setelah proses

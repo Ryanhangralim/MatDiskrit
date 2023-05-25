@@ -59,15 +59,34 @@ void kodepohon()
         vh=l;
         kode[i]=vh+1;
 
-        matriks[vt][vh]=0;
-        matriks[vh][vt]=0;
+        matriks[k][l]=0;
+        matriks[l][k]=0;
 
         //menghapus derajat derajat 
-        derajat[vt]-=1;
-        derajat[vh]-=1;
+        derajat[k]-=1;
+        derajat[l]-=1;
 
-        cout<<"Vt: "<<vt+1<<" vh: "<<vh+1<<endl;
+        cout<<"k: "<<k<<" l: "<<l<<endl;
    }
+
+    //print derajat setelah proses
+    cout<<endl<<"Derajat setelah proses: \n";
+    for(int i = 0; i<vertex; i++)
+    {
+        cout<<derajat[i]<<" ";
+    }
+    cout<<endl;
+
+    //print matriks setelah proses
+    cout<<endl<<"matriks setelah proses: \n";
+     for(int i = 0; i<vertex; i++)
+    {
+        for(int j = 0; j<vertex; j++)
+        {
+            cout<<matriks[i][j]<<" ";
+        }
+        cout<<endl;
+    }
 
     //print kode pohon
     cout<<endl<<"kode pohon: ";
@@ -99,10 +118,11 @@ void rekonstruksipohon()
     //mencari berapa total angka vertex dalam kode
     for(int i = 0; i<jumlahkode; i++)
     {
-        vertex[kode[i] - 1]+=1;
+        vertex[kode[i] - 1] +=1;
     }
 
     //mencari angka vertex terkecil yang tidak ada pada array kode
+    int x = 0;
     for(int i = 0; i < jumlahkode; i++)
     {
         for(int j = 0; j < jumlahvertex; j++)
@@ -110,9 +130,10 @@ void rekonstruksipohon()
             if(vertex[j]==0)
             {
                 vertex[j]=-1;
-                edge[i][1]=j+1;
-                edge[i][0]=kode[i];
+                edge[x][1]=j+1;
+                edge[x][0]=kode[i];
                 vertex[kode[i] - 1]--;
+                x++;
 
                 break;
             }
@@ -121,18 +142,22 @@ void rekonstruksipohon()
 
     //mencari 2 angka terakhir
     int k = 0;
+    int n1, n2;
     for (int i = 0; i < jumlahvertex; i++)
     {
         if(vertex[i]==0 && k == 0)
         {
-            edge[jumlahkode][0] = i + 1;
+            n1 = i + 1;
             k++;
         }
         else if(vertex[i]==0 && k == 1)
         {
-            edge[jumlahkode][1] = i + 1;
+            n2 = i + 1;
         }
     }
+
+    edge[jumlahvertex-2][0]=n1;
+    edge[jumlahvertex-2][1]=n2;
 
     cout<<"Edge: "<<endl;
     for(int i = 0; i < jumlahvertex-1; i++)
@@ -243,14 +268,8 @@ bool syaratEuler(int *matriks, int jumlahvertex)
         }
     }
 
-    if(((ganjil==2) && (genap=jumlahvertex-2)))
+    if(((ganjil==2) && (genap=jumlahvertex-2)) || ((ganjil==0) && (genap==jumlahvertex)))
     {
-        cout<<"Graf merupakan graf semi-euler\n";
-        grafEuler=true;
-    }
-    else if(((ganjil==0) && (genap==jumlahvertex)))
-    {
-        cout<<"Graf merupakan graf euler\n";
         grafEuler=true;
     }
     return grafEuler;
@@ -369,7 +388,7 @@ void fleury(int start, int *matriks, int jumlahvertex)
             {
                 cout<< start+1 << "--" << v+1 << " "<<endl;
                 *tempMatriks[start][v] = *tempMatriks[v][start] = 0; //menghapus edge dari graf
-                // edge--; 
+                edge--; 
                 fleury(v, tempMatriks[0][0], jumlahvertex);
             }
         }

@@ -1,2 +1,453 @@
-#include<bits/stdc++.h> 
-using namespace std; int main() { int vertex; string namaFile; /*Meminta input jumlah vertex */cout<<"Masukkan jumlah vertex: "; cin>>vertex; getchar(); int matrix[vertex+1][vertex+1]={0}; int hm[vertex+1]={0}; int temp[vertex+1]={0}; int d[vertex+1][2]={0}; int jumlah, t, t2=0; int w[vertex+1]={0}; /*Meminta input nama file*/ cout<<"Masukkan nama text file (.txt) yang berisi matrix: "; getline(cin, namaFile); ifstream file (namaFile+".txt"); /*input dari file ke array*/ for(int i = 1; i <= vertex; i++) { for(int j = 1; j <= vertex; j++) { file >> matrix[i][j]; } } file.close(); /*print matriks*/ for(int i = 1; i <= vertex; i++) { for(int j = 1; j <= vertex; j++){ cout<<matrix[i][j]<<" "; } cout<<"\n"; } /*mengisi array hm dengan vertex yang terhubung ke vertex 1*/ for(int i=2; i<=vertex; i++) { hm[i]=matrix[1][i]; } /*Perubahan nilai hm*/ for(int i=2; i<=vertex; i++) { for(int j=2; j<=vertex; j++) { if((hm[j]==1)and(temp[j]==0)) { temp[j]=1; for (int k = 2; k <= vertex; k++) { if((matrix[j][k]==1)and(hm[k]==0)) { hm[k]=1; } } } } } for(int i = 2; i<=vertex; i++ ) { cout<<hm[i]<<" "; jumlah = jumlah + hm[i]; } if(jumlah==vertex-1) { cout<<"\nTerhubung"; } else { cout<<"\nTidak Terhubung"; } for(int i = 1; i<=vertex; i++) /*menghitung derajat*/ { d[i][0]=i; for(int j=1; j<=vertex; j++) { if(i!=j) { if(matrix[i][j]==1) { d[i][1]++; } else matrix[i][j]=0; } } } for(int i=1;i<=vertex;i++) { cout<<"\n"<<"Derajat vertex "<<d[i][0]<<" adalah "<<d[i][1]; } for(int i=1; i<=vertex; i++) { for(int j=i+1; j<=vertex; j++) { if(d[i][1]<d[j][1]) { t=d[i][1]; d[i][1]=d[j][1]; /*mengubah derajat vertex*/ d[j][1]=t; t2=d[i][0]; /*mengubah urutan vertex*/ d[i][0]=d[j][0]; d[j][0]=t2; } } } cout<<endl<<"Tampilan urutan vertek sesuai derajat"<<endl; for(int i = 1; i <= vertex; i++) { cout<<"Derajat vertek ke "<<d[i][0]<<" adalah "<<d[i][1]<<endl; } cout<<"Warna vertek"<<endl; temp[vertex+1]={0}; int warna=1; w[d[1][0]]= warna; int total = 1; for(int i=1; i<=vertex; i++) { temp[i]=matrix[d[1][0]][i]; } while(total<vertex) { for(int i=1; i<=vertex; i++) { if((w[d[i][0]]==0)and(temp[d[i][0]]==0)) { w[d[i][0]]=warna; total++; for (int j=1; j<=vertex; j++) { if(temp[j]==0) { temp[j]=temp[j]+matrix[d[i][0]][j]; } } } } warna++; for(int j=1; j<=vertex;j++) { temp[j]=0; } } for(int i=1; i<=vertex; i++) { cout<<"Warna vertek ke "<<i<<" adalah "<<w[i]<<endl; } cout<<"Jumlah warna dalam graph adalah: "<<warna-1; return 0; }
+#include<bits/stdc++.h>
+using namespace std;
+
+void kodepohon()
+{
+    int vertex;
+    string namaFile;
+
+    //meminta input jumlah vertex
+    cout<<"Masukkan jumlah vertex: ";
+    cin>>vertex;
+    getchar();
+
+    //meminta input nama file
+    cout<<"Masukkan nama text file (.txt) yang berisi matriks: ";
+    getline(cin, namaFile);
+
+
+    //Deklarasi variabel
+    int derajat[vertex]={0};
+    int kode[vertex]={0};
+    int matriks[vertex][vertex]={0};
+    int vt, vh;
+
+    //Input matriks dari file ke array
+    ifstream file (namaFile+".txt");
+    for(int i = 0; i<vertex; i++)
+    {
+        for(int j = 0; j<vertex; j++)
+        {
+            file >> matriks[i][j];
+        }
+    }
+    file.close();
+
+    //Menghitung derajat matriks
+    for(int i = 0; i<vertex; i++)
+    {
+        for(int j = 0; j<vertex; j++)
+        {
+            derajat[i]+=matriks[i][j];
+        }
+    }
+   
+   //Mencari derajat 1 dan kode
+   for(int i = 0; i<vertex-2; i++)
+   {
+        int k = 0;
+        while(derajat[k]!=1)
+        {
+            k++;
+        }
+        vt = k;
+        int l = 0;
+        while(matriks[vt][l]!=1)
+        {
+            l++;
+        }
+        vh=l;
+        kode[i]=vh+1;
+
+        matriks[vt][vh]=0;
+        matriks[vh][vt]=0;
+
+        //menghapus derajat derajat 
+        derajat[vt]-=1;
+        derajat[vh]-=1;
+
+        cout<<"Vt: "<<vt+1<<" vh: "<<vh+1<<endl;
+   }
+
+    //print kode pohon
+    cout<<endl<<"kode pohon: ";
+    for(int i = 0; i<vertex-2; i++)
+    {
+        cout<<kode[i]<<" ";
+    }
+}
+
+void rekonstruksipohon()
+{
+    int jumlahkode;
+    cout<<"Masukkan jumlah kode: ";
+    cin>>jumlahkode;
+
+    //deklarasi variabel
+    int jumlahvertex = jumlahkode+2;
+    int kode[jumlahkode];
+    int vertex[jumlahvertex]={0}; //mengisi array vertex dengan 0
+    int edge[jumlahvertex-1][2];
+
+    //mengisi array kode dengan input user
+    cout<<"Masukkan kode (dipisah dengan spasi): ";
+    for(int i = 0; i < jumlahkode; i++)
+    {
+        cin>>kode[i];
+    }
+
+    //mencari berapa total angka vertex dalam kode
+    for(int i = 0; i<jumlahkode; i++)
+    {
+        vertex[kode[i] - 1]+=1;
+    }
+
+    //mencari angka vertex terkecil yang tidak ada pada array kode
+    for(int i = 0; i < jumlahkode; i++)
+    {
+        for(int j = 0; j < jumlahvertex; j++)
+        {
+            if(vertex[j]==0)
+            {
+                vertex[j]=-1;
+                edge[i][1]=j+1;
+                edge[i][0]=kode[i];
+                vertex[kode[i] - 1]--;
+
+                break;
+            }
+        }
+    }
+
+    //mencari 2 angka terakhir
+    int k = 0;
+    for (int i = 0; i < jumlahvertex; i++)
+    {
+        if(vertex[i]==0 && k == 0)
+        {
+            edge[jumlahkode][0] = i + 1;
+            k++;
+        }
+        else if(vertex[i]==0 && k == 1)
+        {
+            edge[jumlahkode][1] = i + 1;
+        }
+    }
+
+    cout<<"Edge: "<<endl;
+    for(int i = 0; i < jumlahvertex-1; i++)
+    {
+        cout<<edge[i][0]<<" "<<edge[i][1]<<endl;
+    }
+
+    cout<<endl;
+    cout<<"Matriks ketetanggan:\n";
+
+    //deklarasi matriks
+    int matriks[jumlahvertex][jumlahvertex]={};
+
+    for(int i = 0; i<jumlahvertex-1; i++)
+    {
+        matriks[edge[i][0]-1][edge[i][1]-1]=1;
+        matriks[edge[i][1]-1][edge[i][0]-1]=1;
+    }
+
+    for(int i = 0; i<jumlahvertex; i++)
+    {
+        for(int j = 0; j<jumlahvertex; j++)
+        {
+            cout<<matriks[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+}
+
+//Function untuk cek apakah graf memenuhi syarat untuk graf euler
+bool syaratEuler(int *matriks, int jumlahvertex)
+{
+    //membuat matriks sementara untuk menampung matriks
+    int tempMatriks[jumlahvertex][jumlahvertex];
+    for(int i = 0; i<jumlahvertex; i++)
+    {
+        for(int j = 0; j<jumlahvertex; j++)
+        {
+            tempMatriks[i][j]=*matriks;
+            matriks = matriks + 1;
+        }
+    }
+
+    //deklarasi variabel
+    int temp[jumlahvertex-1]={0};
+    int cek[jumlahvertex-1]={0};
+    int derajat[jumlahvertex]={0};
+    int terhubung= 0;
+    bool grafterhubung=false;
+    bool grafEuler=false;
+
+    //Tahap 1: Cek syarat euler 1 (graph terhubung)
+    //mengisi array cek dengan vertex yang terhubung dengan vertex 1
+    for(int i = 1, j = 0; i < jumlahvertex; i++)
+    {
+        cek[j]=tempMatriks[0][i];
+        j++;
+    }
+
+    for(int i = 0; i < jumlahvertex-1; i++)
+    {
+        for(int j = 0; j < jumlahvertex-1; j++)
+        {
+            if(tempMatriks[i][j]==1 && cek[j]==0)
+            {
+                cek[j]=1;
+            }
+        }
+    }
+
+    //menghitung jumlah vertex yang terhubung
+    for(auto x : cek)
+    {
+        terhubung += x;
+    }
+
+    //jika vertex terhubung semua, maka graf terhubung
+    if(terhubung==jumlahvertex-1)
+    {
+        grafterhubung = true;
+    }
+
+    //Tahap 2: Cek syarat euler 2 (derajat)
+    if(grafterhubung == true)
+    {
+        for(int i = 0; i<jumlahvertex; i++)
+        {
+            for(int j = 0; j<jumlahvertex; j++)
+            {
+                derajat[i]+=tempMatriks[i][j];
+            }
+        } 
+    }
+
+    //mencari jumlah derajat ganjil dan genap
+    int ganjil, genap;
+    ganjil = genap = 0;
+    for(auto x : derajat)
+    {
+        if(x%2==0)
+        {
+            genap++;
+        }
+        else if(x%2!=0)
+        {
+            ganjil++;
+        }
+    }
+
+    if(((ganjil==2) && (genap=jumlahvertex-2)) || ((ganjil==0) && (genap==jumlahvertex)))
+    {
+        grafEuler=true;
+    }
+    return grafEuler;
+}
+
+//Function untuk mencari vertex awal
+int cariVertexAwal(int *matriks, int jumlahvertex)
+{
+    //membuat matriks sementara untuk menampung matriks
+    int tempMatriks[jumlahvertex][jumlahvertex];
+    for(int i = 0; i<jumlahvertex; i++)
+    {
+        for(int j = 0; j<jumlahvertex; j++)
+        {
+            tempMatriks[i][j]=*matriks;
+            matriks = matriks + 1;
+        }
+    }
+
+    //mencari vertex awal
+    for(int i = 0; i<jumlahvertex; i++)
+    {
+        int derajat = 0;
+        for(int j = 0; j<jumlahvertex; j++)
+        {
+            if(tempMatriks[i][j])
+            {
+                derajat++; //menghitung jumlah derajat pada vertex
+            }
+        }
+        if(derajat % 2 != 0)
+        {
+            return i; //jika derajat vertex ganjil, maka vertex tersebut menjadi vertex awal
+        }
+    }
+    return 0; //jika semua derajat vertex genap, maka mulai dari vertex terkecil
+}
+
+//Function untuk mengecek apakah edge adalah bridge
+bool isBridge(int u, int v, int *matriks, int jumlahvertex)
+{
+    //membuat matriks sementara untuk menampung matriks
+    int *tempMatriks[jumlahvertex][jumlahvertex];
+    for(int i = 0; i<jumlahvertex; i++)
+    {
+        for(int j = 0; j<jumlahvertex; j++)
+        {
+            tempMatriks[i][j]=matriks;
+            matriks = matriks + 1;
+        }
+    }
+
+    int derajat = 0;
+    for(int i = 0; i<jumlahvertex; i++)
+    {
+        if(*tempMatriks[v][i])
+        {
+            derajat++;
+        }
+    }
+    if(derajat>1)
+        {
+            return false; //edge bukan jembatan/bridge
+        }
+    return true; //edge adalah jembatan/bridge
+}
+
+//Function untuk menghitung edge
+int hitungEdge(int *matriks, int jumlahvertex)
+{
+    //membuat matriks sementara untuk menampung matriks
+    int *tempMatriks[jumlahvertex][jumlahvertex];
+    for(int i = 0; i<jumlahvertex; i++)
+    {
+        for(int j = 0; j<jumlahvertex; j++)
+        {
+            tempMatriks[i][j]=matriks;
+            matriks = matriks + 1;
+        }
+    }
+
+    int count = 0;
+    for(int i = 0; i<jumlahvertex; i++)
+    {
+        for(int j = i; j<jumlahvertex; j++)
+        {
+            if(*tempMatriks[i][j])
+            {
+                count++;
+            }
+        }
+    }
+    return count; //menghitung jumlah edge dalam graph
+}
+
+//fungsi untuk algoritma fleury
+void fleury(int start, int *matriks, int jumlahvertex)
+{
+    //membuat matriks sementara untuk menampung matriks
+    int *tempMatriks[jumlahvertex][jumlahvertex];
+    for(int i = 0; i<jumlahvertex; i++)
+    {
+        for(int j = 0; j<jumlahvertex; j++)
+        {
+            tempMatriks[i][j]=matriks;
+            matriks = matriks + 1;
+        }
+    }
+
+    int edge = hitungEdge(tempMatriks[0][0], jumlahvertex);
+    for(int v = 0; v<jumlahvertex; v++) 
+    {
+        if(*tempMatriks[start][v])
+        {
+            if(edge <= 1 || !isBridge(start, v, tempMatriks[0][0], jumlahvertex)) //edge digunakan jika ada dan bukan jembatan/bridge
+            {
+                cout<< start+1 << "--" << v+1 << " "<<endl;
+                *tempMatriks[start][v] = *tempMatriks[v][start] = 0; //menghapus edge dari graf
+                edge--; 
+                fleury(v, tempMatriks[0][0], jumlahvertex);
+            }
+        }
+    }
+}
+
+void euler()
+{
+    int jumlahvertex;
+    string namaFile;
+
+    //meminta input jumlah vertex
+    cout<<"Masukkan jumlah vertex: ";
+    cin>>jumlahvertex;
+    getchar();
+
+    //deklarasi variabel
+    int matriks[jumlahvertex][jumlahvertex]={};
+
+    //meminta nama file
+    cout<<"Masukkan nama text file (.txt) yang berisi matriks: ";
+    getline(cin,namaFile);
+
+    //menginput matriks dari file
+    ifstream file (namaFile+".txt");
+    for(int i = 0; i < jumlahvertex; i++)
+    {
+        for(int j = 0; j < jumlahvertex; j++)
+        {
+            file >> matriks[i][j];
+        }
+    }
+    file.close();
+
+    if(syaratEuler(&matriks[0][0], jumlahvertex)==1)
+    {
+        cout<<"Syarat euler terpenuhi\n";
+        cout<<"Graf euler atau lintasan euler: \n";
+        fleury(cariVertexAwal(&matriks[0][0], jumlahvertex), &matriks[0][0], jumlahvertex);
+    }
+    else if(syaratEuler(&matriks[0][0], jumlahvertex)==0)
+    {
+        cout<<"Graf tidak memenuhi syarat euler";
+    }
+}
+
+int main()
+{
+    int pilihan;
+menu:
+    cout<<"Menu: \n";
+    cout<<"1. Pengkodean pohon\n";
+    cout<<"2. Rekonstruksi pohon\n";
+    cout<<"3. Graf Euler\n";
+    cout<<"4. Keluar\n";
+    cout<<"Pilhan: ";
+    cin>>pilihan;
+    getchar();
+
+    switch(pilihan)
+    {
+        case 1:
+            kodepohon();
+            getchar();
+            goto menu;
+        break;
+
+        case 2:
+            rekonstruksipohon();
+            getchar();
+            goto menu;
+        break;
+
+        case 3:
+            //euler
+            euler();
+            getchar();
+            goto menu;
+        break;
+        
+        case 4:
+            exit(0);
+        break;
+    }
+
+    return 0;
+}
