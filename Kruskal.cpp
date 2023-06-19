@@ -29,7 +29,9 @@ int main()
     }
     file.close();
 
-    //menghitung jumlah edge
+    vector<pair<int,pair<int,int>>> edges;
+
+    //menghitung jumlah edge dan mendata edge
     int jumlahedge = 0;
     for(int i = 0; i<jumlahvertex; i++)
     {
@@ -38,6 +40,7 @@ int main()
             if(matriks[i][j])
             {
                 jumlahedge++;
+                edges.push_back(make_pair(matriks[i][j], make_pair(i,j)));
             }
         }
     }
@@ -45,44 +48,21 @@ int main()
     cout<<endl<<"Jumlah edge: "<<jumlahedge;
 
     //deklarasi variabel
-    int edge[2][jumlahedge]={};
     int temp[jumlahvertex][jumlahvertex]={};
     int w[jumlahvertex]={};
     int v1, v2, k, mst;
-    vector<pair<int,pair<int,int>>> edges;
-
-    //mencari edge dari matriks
-    int counter = 0;
-    for(int i = 0; i<jumlahvertex; i++)
-    {
-        for(int j = i; j<jumlahvertex; j++)
-        {
-            if(matriks[i][j])
-            {
-                edges.push_back(make_pair(matriks[i][j], make_pair(i,j)));
-            }
-        }
-    } 
 
     //mengurutkan edges
-    int size = edges.size();
     sort(edges.begin(),edges.end());
 
-    //input edge ke dalam array
-    for(int i = 0; i<jumlahedge; i++)
-    {
-        edge[0][i]=edges[i].second.first;
-        edge[1][i]=edges[i].second.second;
-    }
-    
     k = 1;
     mst = 0;
     for(int i = 0; i<jumlahedge; i++)
     {
         if(k<=jumlahvertex-1)
         {
-            v1=edge[0][i];
-            v2=edge[1][i];
+            v1=edges[i].second.first;
+            v2=edges[i].second.second;
             //set w ke 0
             w[jumlahvertex]={};
 

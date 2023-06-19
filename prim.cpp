@@ -29,19 +29,6 @@ int main()
     }
     file.close();
 
-    //menghitung jumlah edge
-    int jumlahedge = 0;
-    for(int i = 0; i<jumlahvertex; i++)
-    {
-        for(int j = i; j<jumlahvertex; j++)
-        {
-            if(matriks[i][j])
-            {
-                jumlahedge++;
-            }
-        }
-    }
-
     //deklarasi variabel
     int v1, k, mst;
     mst=0;
