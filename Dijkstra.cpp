@@ -53,11 +53,6 @@ int main()
         }
     }
 
-    for(int i = 0; i<jumlahvertex; i++)
-    {
-        cout<<d[0][i]<<" "<<d[1][i]<<" "<<d[2][i]<<endl;
-    }
-
     //mencari shortest path
     for(int k = 0; k<jumlahvertex; k++)
     {
@@ -91,23 +86,6 @@ int main()
         }
         d[1][v2]=1;
 
-        //print
-        cout<<endl;
-        for(int o = 0; o<jumlahvertex; o++)
-        {
-        cout<<d[0][o]<<" "<<d[1][o]<<" "<<d[2][o]<<endl;
-        }
-        cout<<"\nx: "<<x;
-        cout<<"\nv2: "<<v2<<endl<<endl;
-        for(int i = 0; i<jumlahvertex; i++)
-        {
-            for(int j = 0; j<jumlahvertex; j++)
-            {
-                cout<<matriks[i][j]<<" ";
-            }
-            cout<<endl;
-        }
-        cout<<endl;
 
     }
 
