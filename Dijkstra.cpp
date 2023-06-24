@@ -35,7 +35,7 @@ int main()
     awal-=1;
 
     int d[3][jumlahvertex];
-    int v1, v2;
+    int v2;
 
     //inisiasi awal
     for(int i = 0; i<jumlahvertex; i++)
