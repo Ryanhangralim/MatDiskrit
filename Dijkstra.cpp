@@ -74,13 +74,13 @@ int main()
                         matriks[j][i]=0;
                     }
                 }
-            }
-                for(int i = 0; i<jumlahvertex; i++)
+             }
+                for(int m = 0; m<jumlahvertex; m++)
                 {
-                    if((d[0][i]<x)&&(d[1][i]!=1))
+                    if((d[0][m]<x)&&(d[1][m]!=1))
                     {
-                        x = d[0][i];
-                        v2 = i;
+                        x = d[0][m];
+                        v2 = m;
                     }
                 }           
         }
